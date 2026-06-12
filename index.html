@@ -22,9 +22,12 @@
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         @import url('https://googleapis.com');
-        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+        }
 
-        /* Floating WhatsApp Action Anchor Styles */
+        /* Floating WhatsApp Button Styling */
         .whatsapp-float {
             position: fixed;
             bottom: 30px;
@@ -34,9 +37,9 @@
             border-radius: 50px;
             text-align: center;
             padding: 12px 20px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 700;
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             display: flex;
             align-items: center;
@@ -44,111 +47,115 @@
             text-decoration: none;
             transition: all 0.3s ease-in-out;
         }
+
         .whatsapp-float:hover {
             background-color: #128c7e;
             transform: translateY(-5px);
-            box-shadow: 0 6px 18px rgba(37, 211, 102, 0.4);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
             color: #ffffff;
         }
 
-        /* Custom Navigation Highlights */
-        .nav-link-active {
-            border-bottom: 2px solid #10b981;
-            color: #10b981;
+        /* Slide-in animation for earning notifications */
+        @keyframes slideUp {
+            0% { transform: translateY(150%); opacity: 0; }
+            10% { transform: translateY(0); opacity: 1; }
+            90% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(150%); opacity: 0; }
+        }
+        .earning-toast {
+            animation: slideUp 5s ease-in-out infinite;
         }
     </style>
 </head>
-<body class="bg-[#0b1426] text-slate-100 antialiased min-h-screen">
+<body class="bg-slate-900 text-slate-100 antialiased relative min-h-screen">
 
-    <!-- Global Platform Navigation Header -->
-    <nav class="bg-[#111c33] border-b border-slate-800 px-4 py-3 sticky top-0 z-50 flex items-center justify-between shadow-md">
-        <div class="flex items-center gap-2">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-400 flex items-center justify-center font-bold text-slate-950 text-sm tracking-tighter">EQ</div>
-            <div>
-                <span class="font-bold text-sm tracking-wide block">EarnQash</span>
-                <span class="text-[10px] text-emerald-400 block -mt-1 font-medium uppercase tracking-wider">Connections</span>
+    <!-- Hero Section -->
+    <header class="relative bg-gradient-to-br from-indigo-900 via-slate-900 to-emerald-950 py-20 px-4 text-center border-b border-slate-800">
+        <div class="max-w-4xl mx-auto">
+            <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-xs font-semibold px-3 py-1 rounded-full uppercase tracking-wider">
+                Official Launch: June 13, 2026 @ 14:00 E.A.T
+            </span>
+            <h1 class="text-4xl md:text-6xl font-bold mt-6 tracking-tight">
+                Earn Qash <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Connections</span> Uganda 🇺🇬
+            </h1>
+            <p class="text-slate-400 mt-4 text-lg md:text-xl max-w-2xl mx-auto">
+                Multi-featured digital earning and affiliate platform powered by ZanyTech Co. Ltd.
+            </p>
+            
+            <!-- Pricing Card Inside Hero -->
+            <div class="mt-10 inline-block bg-slate-800/80 backdrop-blur border border-slate-700 rounded-2xl p-6 shadow-xl max-w-sm w-full">
+                <div class="text-xs text-slate-400 uppercase tracking-widest font-semibold">Activation Fee</div>
+                <div class="text-3xl font-bold text-emerald-400 mt-1">UGX 19,000</div>
+                <div class="text-sm text-slate-400 mt-2 flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-gift text-emerald-400"></i> Includes UGX 10,000 Welcome Bonus
+                </div>
+                <a href="https://earn-qash.com" target="_blank" rel="noopener noreferrer" class="mt-6 block w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 px-4 rounded-xl transition duration-200 shadow-lg shadow-emerald-500/20">
+                    <i class="fa-solid fa-user-plus mr-2"></i> Register Account Now
+                </a>
             </div>
         </div>
-        
-        <!-- Tab Swapping Navigation Links -->
-        <div class="flex items-center gap-4 text-xs font-semibold">
-            <button id="tab-home-btn" onclick="switchTab('home')" class="py-1 text-emerald-400 nav-link-active transition duration-150">Overview</button>
-            <button id="tab-chat-btn" onclick="switchTab('chat')" class="py-1 text-slate-400 hover:text-slate-200 transition duration-150">Chat Room</button>
-        </div>
+    </header>
 
-        <div class="flex items-center gap-2 bg-slate-950/40 px-3 py-1 rounded-full border border-slate-800 text-[11px]">
-            <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-            <span class="text-slate-400"><strong class="text-slate-200" id="global-online-counter">1,842</strong> online</span>
-        </div>
-    </nav>
+    <!-- Main Content Container -->
+    <main class="max-w-6xl mx-auto px-4 py-16">
 
-    <!-- TAB 1: MAIN LANDING OVERVIEW PAGE -->
-    <div id="view-home" class="block">
-        <!-- Hero Element Banner -->
-        <header class="relative bg-gradient-to-br from-indigo-950 via-[#0b1426] to-emerald-950/40 py-16 px-4 text-center border-b border-slate-800/60">
-            <div class="max-w-4xl mx-auto">
-                <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">
-                    Official Launch: June 13, 2026 @ 14:00 E.A.T
-                </span>
-                <h1 class="text-3xl md:text-5xl font-black mt-5 tracking-tight leading-tight">
-                    Earn Qash <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">Connections</span> Uganda 🇺🇬
-                </h1>
-                <p class="text-slate-400 mt-3 text-sm md:text-base max-w-xl mx-auto leading-relaxed">
-                    Automated task monetization matrix & affiliate marketing distribution engine powered by ZanyTech Co. Ltd.
-                </p>
-                
-                <!-- Centerpiece Conversion Access Module -->
-                <div class="mt-8 inline-block bg-[#111c33]/90 backdrop-blur border border-slate-700/60 rounded-2xl p-6 shadow-xl max-w-sm w-full">
-                    <div class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Registration Package</div>
-                    <div class="text-3xl font-black text-emerald-400 mt-1">UGX 19,000</div>
-                    <div class="text-xs text-slate-300 mt-2 flex items-center justify-center gap-1.5 bg-slate-950/40 py-1.5 px-3 rounded-lg border border-slate-800">
-                        <i class="fa-solid fa-gift text-emerald-400"></i> Includes UGX 10,000 Free Welcome Bonus
+        <!-- SIMULATED: CHAT WITH FOREIGNERS PAGE COMPONENT -->
+        <section class="mb-24 bg-slate-950/40 border border-slate-800 rounded-3xl p-6 md:p-8 shadow-2xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-800 pb-6 mb-8 gap-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                        <span class="text-xs uppercase font-bold tracking-widest text-red-400">LIVE NOW</span>
                     </div>
-                    <a href="https://earn-qash.com" target="_blank" rel="noopener noreferrer" class="mt-5 block w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 px-4 rounded-xl transition duration-200 shadow-md">
-                        <i class="fa-solid fa-user-plus mr-1.5"></i> Activate Dashboard Now
-                    </a>
+                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight mt-1 text-transparent bg-clip-text bg-gradient-to-r from-slate-100 to-slate-300">Live Foreigners Online</h2>
+                    <p class="text-slate-400 text-xs mt-1">Tap any profile dashboard card to launch an instant payout chat session.</p>
+                </div>
+                <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-xl self-start sm:self-center">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span id="live-counter" class="text-emerald-400 font-mono font-bold text-sm">1,842</span>
+                    <span class="text-slate-400 text-xs">Users Active</span>
                 </div>
             </div>
-        </header>
 
-        <!-- Core Marketing Highlights Grid -->
-        <main class="max-w-6xl mx-auto px-4 py-12">
-            <section class="mb-16">
-                <h2 class="text-xl md:text-2xl font-bold text-center mb-1">10 Integrated Earning Streams</h2>
-                <p class="text-slate-400 text-center mb-10 text-xs">A comprehensive operational summary of features within the platform.</p>
+            <!-- Profile Dashboard Simulated Grid (Matches Screenshot Layout) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <!-- Feature 1 -->
-                    <div onclick="switchTab('chat')" class="bg-[#111c33]/40 border border-slate-800/80 p-5 rounded-xl hover:border-emerald-500/40 transition duration-200 cursor-pointer group">
-                        <div class="w-9 h-9 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-400 mb-3"><i class="fa-solid fa-comments"></i></div>
-                        <h3 class="font-bold text-sm text-slate-200 flex items-center justify-between">Chat with Foreigners <i class="fa-solid fa-arrow-right text-xs opacity-0 group-hover:opacity-100 transition duration-150 text-emerald-400"></i></h3>
-                        <p class="text-slate-400 text-xs mt-1.5 leading-relaxed">Engage in dialogue matrices and earn micro-payouts dependent on response frequency, active dialogue length, and chat consistency.</p>
+                <!-- Profile Card 1 -->
+                <div class="bg-slate-900/90 border border-slate-800/80 p-5 rounded-2xl flex flex-col items-center text-center relative shadow-lg">
+                    <div class="relative w-20 h-20 mb-3">
+                        <img src="https://unsplash.com" alt="Margaret W." class="w-full h-full object-cover rounded-full border-2 border-slate-700">
+                        <span class="absolute bottom-1 right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
                     </div>
-                    <!-- Feature 2 -->
-                    <div class="bg-[#111c33]/40 border border-slate-800/80 p-5 rounded-xl">
-                        <div class="w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400 mb-3"><i class="fa-solid fa-network-wired"></i></div>
-                        <h3 class="font-bold text-sm text-slate-200">Affiliate Marketing</h3>
-                        <p class="text-slate-400 text-xs mt-1.5 leading-relaxed">Earn tier rewards by sharing invitations across 3 levels: Level 1 pays UGX 10,000; Level 2 pays UGX 5,000; Level 3 pays UGX 2,000.</p>
+                    <h3 class="font-bold text-slate-100">Margaret W.</h3>
+                    <div class="text-[11px] text-slate-400 flex items-center gap-1.5 my-1">🇺🇸 <span>58 • USA</span></div>
+                    <div class="status-badge px-3 py-1 rounded-full text-[10px] font-semibold mt-1 bg-amber-500/10 text-amber-400 border border-amber-500/20">Away briefly</div>
+                    <button onclick="handleChatRedirect()" class="w-full mt-5 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl text-xs tracking-wide transition duration-150 shadow-md">Start Chat</button>
+                </div>
+
+                <!-- Profile Card 2 -->
+                <div class="bg-slate-900/90 border border-slate-800/80 p-5 rounded-2xl flex flex-col items-center text-center relative shadow-lg">
+                    <div class="relative w-20 h-20 mb-3">
+                        <img src="https://unsplash.com" alt="Robert H." class="w-full h-full object-cover rounded-full border-2 border-slate-700">
+                        <span class="absolute bottom-1 right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
                     </div>
-                    <!-- Feature 3 -->
-                    <div class="bg-[#111c33]/40 border border-slate-800/80 p-5 rounded-xl">
-                        <div class="w-9 h-9 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-400 mb-3"><i class="fa-solid fa-crosshairs"></i></div>
-                        <h3 class="font-bold text-sm text-slate-200">Daily Milestone Targets</h3>
-                        <p class="text-slate-400 text-xs mt-1.5 leading-relaxed">Unlock system-assigned micro-parameters inside your member portal area daily to claim premium bonus assets inside a 24-hour window.</p>
+                    <h3 class="font-bold text-slate-100">Robert H.</h3>
+                    <div class="text-[11px] text-slate-400 flex items-center gap-1.5 my-1">🇬🇧 <span>62 • UK</span></div>
+                    <div class="status-badge px-3 py-1 rounded-full text-[10px] font-semibold mt-1 bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">Looking to talk</div>
+                    <button onclick="handleChatRedirect()" class="w-full mt-5 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-indigo-400 text-white font-bold py-2.5 px-4 rounded-xl text-xs tracking-wide transition duration-150 shadow-md">Start Chat</button>
+                </div>
+
+                <!-- Profile Card 3 -->
+                <div class="bg-slate-900/90 border border-slate-800/80 p-5 rounded-2xl flex flex-col items-center text-center relative shadow-lg">
+                    <div class="relative w-20 h-20 mb-3">
+                        <img src="https://unsplash.com" alt="Helga S." class="w-full h-full object-cover rounded-full border-2 border-slate-700">
+                        <span class="absolute bottom-1 right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
                     </div>
-                    <!-- Feature 4 -->
-                    <div class="bg-[#111c33]/40 border border-slate-800/80 p-5 rounded-xl">
-                        <div class="w-9 h-9 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 mb-3"><i class="fa-solid fa-rectangle-ad"></i></div>
-                        <h3 class="font-bold text-sm text-slate-200">Commercial Ads Promotion</h3>
-                        <p class="text-slate-400 text-xs mt-1.5 leading-relaxed">Browse featured sponsorship items, interact with visual web banners, and submit text reviews for incremental payouts.</p>
-                    </div>
-                    <!-- Feature 5 -->
-                    <div class="bg-[#111c33]/40 border border-slate-800/80 p-5 rounded-xl">
-                        <div class="w-9 h-9 rounded-lg bg-red-500/10 flex items-center justify-center text-red-400 mb-3"><i class="fa-brands fa-youtube"></i></div>
-                        <h3 class="font-bold text-sm text-slate-200">YouTube Video Watching</h3>
-                        <p class="text-slate-400 text-xs mt-1.5 leading-relaxed">Stream selected short promotional trailers or informational video logs. Commission scales relative to video duration parameters.</p>
-                    </div>
-                    <!-- Feature 6 -->
-                    <div class="bg-[#111c33]/40 border border-slate-800/80 p-5 rounded-xl">
-                        <div class="w-9 h-9 rounded-lg bg-pink-500/10 flex items-center justify-center text-pink-400 mb-3"><i class="fa-brands fa-tiktok"></i></div>
-                        <h3 class="font-bold text-sm text-slate-200">TikTok Short Clips</h3>
+                    <h3 class="font-bold text-slate-100">Helga S.</h3>
+                    <div class="text-[11px] text-slate-400 flex items-center gap-1.5 my-1">🇩🇪 <span>55 • Germany</span></div>
+                    <div class="status-badge px-3 py-1 rounded-full text-[10px] font-semibold mt-1 bg-amber-500/10 text-amber-400 border border-amber-500/20">Away briefly</div>
+                    <button onclick="handleChatRedirect()" class="w-full mt-5 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-indigo-400 text-white font-bold py-2.5 px-4 rounded-xl text-xs tracking-wide transition duration-150 shadow-md">Start Chat</button>
+                </div>
+
+                <!-- Profile Card 4 -->
+                <div class="bg-slate-900/90 border border-slate-800/80 p-5 rounded-2xl flex flex-col items-center text-center relative shadow-lg">
+                    <div class="relative w-20 h-20 mb-3">
